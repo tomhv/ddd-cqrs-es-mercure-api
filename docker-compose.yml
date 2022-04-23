@@ -1,0 +1,40 @@
+# docker-compose.yml
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/app
+
+  app_nginx:
+    build:
+      context: ./docker/app_nginx
+    depends_on:
+      - app
+    ports:
+      - "8888:80"
+
+  caddy:
+    image: dunglas/mercure
+    restart: unless-stopped
+    environment:
+      # Uncomment the following line to disable HTTPS
+      #SERVER_NAME: ':80'
+      MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!'
+      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!'
+      MERCURE_ALLOW_ANONYMOUS: 1
+      ALLOW_ANONYMOUS: 1
+    # Uncomment the following line to enable the development mode
+    #command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
