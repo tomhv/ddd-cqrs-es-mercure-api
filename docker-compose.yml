@@ -38,7 +38,7 @@ services:
     # Comment the following line to disable the development mode
     command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
     ports:
-      - "80:80"
+      - "8666:80"
     volumes:
       - mercure_data:/data
       - mercure_config:/config

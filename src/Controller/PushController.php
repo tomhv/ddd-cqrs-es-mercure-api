@@ -14,13 +14,13 @@ class PushController
     public function __construct(private readonly HubInterface $hub) {}
 
     /**
-     * @Route("/push", name="app_push")
+     * @Route("/push/{message}", name="app_push")
      */
-    public function push(): Response
+    public function push(string $message = 'hello'): Response
     {
         $this->hub->publish(new Update(
-            'foo',
-            json_encode(['status' => 'OutOfStock'])
+            'https://localhost/messages',
+            json_encode(['body' => $message])
         ));
 
         return new Response('Published!');
