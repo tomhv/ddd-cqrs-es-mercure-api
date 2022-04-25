@@ -15,6 +15,8 @@ services:
       - app
     ports:
       - "8888:80"
+    volumes:
+      - ./public:/app/public
 
   front_nginx:
     image: nginx:stable
