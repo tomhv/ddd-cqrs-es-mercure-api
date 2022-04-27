@@ -4,21 +4,30 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Mercure</title>
+        <title>Client</title>
         <script>
-            // The subscriber subscribes to updates for the https://example.com/users/dunglas topic
-            // and to any topic matching https://example.com/books/{id}
             const url = new URL('http://localhost:8666/.well-known/mercure');
             url.searchParams.append('topic', 'https://localhost/messages');
 
             const eventSource = new EventSource(url);
 
-            // The callback will be called every time an update is published
-            eventSource.onmessage = event => console.log(JSON.parse(event.data).body);
+            eventSource.onmessage = event => {
+                console.log(JSON.parse(event.data));
+                renderEvent(JSON.parse(event.data));
+            }
+
+            function renderEvent (data) {
+                const newLi = document.createElement("li");
+                newLi.appendChild(document.createTextNode(data.body));
+
+                const currentUl = document.getElementById("app");
+                currentUl.appendChild(newLi);
+            }
         </script>
     </head>
 
     <body>
         <h1>Hello</h1>
+        <ul id="app"></ul>
     </body>
 </html>
